@@ -1,11 +1,13 @@
-import { Types } from "mongoose";
 
 
 
 export interface IUser {
-    _id?: Types.ObjectId;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     role: "USER";
+    post_id?: string;
+    comment_id?: string;
+    reply_id: string;
 };

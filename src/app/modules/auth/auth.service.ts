@@ -12,7 +12,7 @@ const register = async (payload: Partial<IUser>) => {
 
     const isUserExist = await User.findOne({ email });
     if (isUserExist) {
-        throw new AppError(400, 'User already exists');
+        throw new AppError(409, 'User already exists');
     };
 
     const bcryptedPassword = await bcrypt.hash(password as string, Number(envVars.BCRYPT_SALT_ROUNDS));

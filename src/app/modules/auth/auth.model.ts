@@ -4,14 +4,23 @@ import { IUser } from "./auth.interface";
 
 
 const userSchema = new Schema<IUser>({
-    name: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: {
         type: String,
-        enum: ["USER"],
         default: "USER"
     },
+    post_id: {
+        type: String
+    },
+    comment_id: {
+        type: String
+    },
+    reply_id: {
+        type: String
+    }
 }, {
     versionKey: false,
     timestamps: true
