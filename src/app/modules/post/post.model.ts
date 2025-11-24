@@ -12,7 +12,8 @@ const postSchema = new Schema<IPost>({
         type: String
     },
     imageUrl: {
-        type: String
+        type: String,
+        default: ""
     },
     privacy: {
         type: String,
@@ -21,12 +22,15 @@ const postSchema = new Schema<IPost>({
     },
     likedInfo: {
         type: String,
+        default: ''
     },
     commentInfo: {
         type: String,
+        default: ''
     },
     replyInfo: {
         type: String,
+        default: ''
     },
 }, {
     versionKey: false,

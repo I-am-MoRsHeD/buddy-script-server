@@ -27,6 +27,31 @@ const createPost = async (payload: IPost & { file: Express.Multer.File }, decode
     return result;
 };
 
+const getAllPosts = async () => {
+    const result = await Post.find()
+        .sort({ createdAt: -1 })
+        // .populate({
+        //     path: "likedInfo",
+        //     select: "_id status"
+        // })
+        // .populate({
+        //     path: "commentInfo",
+        //     select: "_id description",
+        //     populate: {
+        //         path: "likedInfo",
+        //         select: "_id status"
+        //     }
+        // })
+        // .populate({
+        //     path: "replyInfo",
+        //     select: "_id description"
+        // });
+
+    return result;
+};
+
+
 export const PostService = {
-    createPost
+    createPost,
+    getAllPosts
 }

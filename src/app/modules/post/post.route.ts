@@ -10,6 +10,7 @@ import { createPostZodSchema } from "./post.validation";
 const router = Router();
 
 
+router.get('/', PostController.getAllPosts);
 
 router.post('/create',
     checkAuth(),
