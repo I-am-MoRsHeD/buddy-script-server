@@ -12,15 +12,6 @@ const userSchema = new Schema<IUser>({
         type: String,
         default: "USER"
     },
-    post_id: {
-        type: String
-    },
-    comment_id: {
-        type: String
-    },
-    reply_id: {
-        type: String
-    }
 }, {
     versionKey: false,
     timestamps: true

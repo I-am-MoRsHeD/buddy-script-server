@@ -11,7 +11,6 @@ export interface IPost {
     description?: string;
     imageUrl?: string;
     privacy: Privacy;
-    likedInfo?: string;
-    commentInfo?: string;
-    replyInfo?: string;
+    likes?: string[];
+    comments?: string[];
 };

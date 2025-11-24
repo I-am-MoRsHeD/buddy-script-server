@@ -10,12 +10,18 @@ import { createPostZodSchema } from "./post.validation";
 const router = Router();
 
 
-router.get('/', PostController.getAllPosts);
+router.get('/',
+    checkAuth(),
+    PostController.getAllPosts);
 
 router.post('/create',
     checkAuth(),
     fileUploader.upload.single('file'),
     validateSchema(createPostZodSchema),
     PostController.createPost);
+
+router.patch(`/like-unlike/:id`,
+    checkAuth(),
+    PostController.updateLikeState);
 
 export const postRoutes = router;

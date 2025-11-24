@@ -7,7 +7,7 @@ import { Post } from "./post.model";
 
 
 const createPost = async (payload: IPost & { file: Express.Multer.File }, decodedUser: JwtPayload) => {
-    console.log(payload);
+
     if (!payload.description && !payload.file) {
         throw new AppError(400, "Empty post cannot be created")
     };
@@ -30,28 +30,73 @@ const createPost = async (payload: IPost & { file: Express.Multer.File }, decode
 const getAllPosts = async () => {
     const result = await Post.find()
         .sort({ createdAt: -1 })
-        // .populate({
-        //     path: "likedInfo",
-        //     select: "_id status"
-        // })
-        // .populate({
-        //     path: "commentInfo",
-        //     select: "_id description",
-        //     populate: {
-        //         path: "likedInfo",
-        //         select: "_id status"
-        //     }
-        // })
-        // .populate({
-        //     path: "replyInfo",
-        //     select: "_id description"
-        // });
+        .populate({
+            path: "creator",
+            select: "_id firstName lastName"
+        })
+        .populate({
+            path: "likes",
+            select: "_id firstName lastName"
+        })
+        .populate({
+            path: "comments",
+            select: "_id description user_id likes replies createdAt",
+            populate: [
+                {
+                    path: "user_id",
+                    select: "_id firstName lastName"
+                },
+                {
+                    path: "likes",
+                    select: "_id firstName lastName"
+                },
+                {
+                    path: "replies",
+                    select: "_id description user_id likes createdAt",
+                    populate: [
+                        {
+                            path: "user_id",
+                            select: "_id firstName lastName"
+                        },
+                        {
+                            path: "likes",
+                            select: "_id firstName lastName"
+                        }
+                    ]
+                }
+            ]
+        });
 
     return result;
 };
 
+const updateLikeState = async (decodedUser: JwtPayload, postId: string) => {
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+        throw new Error("Post not found");
+    }
+
+    const userId = decodedUser.userId;
+
+    const alreadyLiked = post?.likes?.includes(userId);
+
+    if (alreadyLiked) {
+        post.likes = post?.likes?.filter(
+            (id: string) => id.toString() !== userId.toString()
+        );
+    } else {
+        post?.likes?.push(userId);
+    }
+
+    const updatedPost = await post.save();
+
+    return updatedPost
+};
 
 export const PostService = {
     createPost,
-    getAllPosts
+    getAllPosts,
+    updateLikeState
 }

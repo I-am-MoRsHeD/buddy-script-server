@@ -4,6 +4,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { PostService } from "./post.service";
 import { IPost } from "./post.interface";
+import { JwtPayload } from "jsonwebtoken";
 
 
 const createPost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +36,22 @@ const getAllPosts = catchAsync(async (req: Request, res: Response, next: NextFun
     });
 });
 
+const updateLikeState = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    const { id } = req.params;
+
+    const result = await PostService.updateLikeState(user as JwtPayload, id);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Liked post successfully",
+        data: result
+    });
+});
+
 export const PostController = {
     createPost,
-    getAllPosts
+    getAllPosts,
+    updateLikeState
 }
