@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.replyRoutes = void 0;
+const express_1 = require("express");
+const checkAuth_1 = require("../../utils/checkAuth");
+const validateSchema_1 = require("../../middleware/validateSchema");
+const reply_validation_1 = require("./reply.validation");
+const reply_controller_1 = require("./reply.controller");
+const router = (0, express_1.Router)();
+router.post('/create', (0, checkAuth_1.checkAuth)(), (0, validateSchema_1.validateSchema)(reply_validation_1.createReplyZodSchema), reply_controller_1.ReplyController.createReply);
+router.patch(`/like-unlike/:id`, (0, checkAuth_1.checkAuth)(), reply_controller_1.ReplyController.updateLikeState);
+exports.replyRoutes = router;

@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.postRoutes = void 0;
+const express_1 = require("express");
+const post_controller_1 = require("./post.controller");
+const fileUploader_1 = require("../../utils/fileUploader");
+const checkAuth_1 = require("../../utils/checkAuth");
+const validateSchema_1 = require("../../middleware/validateSchema");
+const post_validation_1 = require("./post.validation");
+const router = (0, express_1.Router)();
+router.get('/', (0, checkAuth_1.checkAuth)(), post_controller_1.PostController.getAllPosts);
+router.post('/create', (0, checkAuth_1.checkAuth)(), fileUploader_1.fileUploader.upload.single('file'), (0, validateSchema_1.validateSchema)(post_validation_1.createPostZodSchema), post_controller_1.PostController.createPost);
+router.patch(`/like-unlike/:id`, (0, checkAuth_1.checkAuth)(), post_controller_1.PostController.updateLikeState);
+exports.postRoutes = router;

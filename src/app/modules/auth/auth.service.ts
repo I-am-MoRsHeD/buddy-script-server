@@ -4,6 +4,7 @@ import { User } from "./auth.model";
 import { createUserTokens } from "../../utils/userTokens";
 import AppError from "../../errorHelpers/AppError";
 import { envVars } from "../../config/env";
+import { JwtPayload } from "jsonwebtoken";
 
 
 
@@ -55,7 +56,13 @@ const login = async (payload: Partial<IUser>) => {
     };
 };
 
+const getMe = async (decodedUser: JwtPayload) => {
+    return await User.findById(decodedUser?.userId);
+
+};
+
 export const AuthServices = {
     register,
-    login
+    login,
+    getMe
 }

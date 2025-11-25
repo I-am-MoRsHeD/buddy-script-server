@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Welcome to Smart Task Manager!!');
+    res.send('Welcome to Buddy Script App!!');
 });
 
 app.use(globalErrorHandler);

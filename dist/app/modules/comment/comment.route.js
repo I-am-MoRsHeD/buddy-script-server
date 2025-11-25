@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.commentRoutes = void 0;
+const express_1 = require("express");
+const checkAuth_1 = require("../../utils/checkAuth");
+const validateSchema_1 = require("../../middleware/validateSchema");
+const comment_validation_1 = require("./comment.validation");
+const comment_controller_1 = require("./comment.controller");
+const router = (0, express_1.Router)();
+router.post('/create', (0, checkAuth_1.checkAuth)(), (0, validateSchema_1.validateSchema)(comment_validation_1.createCommentZodSchema), comment_controller_1.CommentController.createComment);
+router.patch(`/like-unlike/:id`, (0, checkAuth_1.checkAuth)(), comment_controller_1.CommentController.updateLikeState);
+exports.commentRoutes = router;
